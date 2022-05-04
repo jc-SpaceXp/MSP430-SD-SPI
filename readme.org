@@ -1,0 +1,23 @@
+** Purpose
+
+The idea behind this project was to get some experience using the SPI
+protocol and using my MSP430
+
+** Building Project
+
+*Requirements:* 
+- TI's open source MSP430-GCC compiler and support files from their website
+
+With the requirements satisfied. It is as simple as:
+
+#+BEGIN_EXAMPLE
+        $ make clean all
+        $ make clean all DEBUG=1
+#+END_EXAMPLE
+
+(With the latter making a DEBUG build for use with GDB)
+
+** License
+
+This project is zlib licensed, as found in the [[file:LICENSE][LICENSE]] file.
+
