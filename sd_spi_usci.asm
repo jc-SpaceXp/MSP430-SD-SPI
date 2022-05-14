@@ -6,9 +6,9 @@
 
 	.include "msp430g2553.inc" ; include device header file
 
-	.sect ".data", "wa"  ; using data explicitlly leads to a bug
+	.sect ".data", "wa"
 CmdBytes: .space 6, 0    ; reserve 6 bytes and fill w/ 0s
-;RespBytes: .space 148, 0    ; reserve 6 bytes and fill w/ 0s
+;RespBytes: .space 148, 0    ; reserve x bytes and fill w/ 0s
 
 	.text
 
@@ -40,20 +40,20 @@ CmdBytes: .space 6, 0    ; reserve 6 bytes and fill w/ 0s
 	.global Reset  ; expose to linker
 
 
-/*
- * Crc7Calc subroutine performs a CRC7 check on either a 40-bit or
- * 120-bit input (fed byte by byte via R6)
- * R8 is used for the address of the input byte (later stored in R6)
- * R7 is used to for the CRC7 result
- * R14 is used for the total number of iterations/bits (either 40 or 120)
- * R12-R15 are used for intermediate calculations
- *
- * Since a command is 6 bytes long we write the resulting CRC7 result back into RAM
- * so you can later send a command over USCI w/o calculating the CRC7 whilst transmitting
- *
- * The result returned is a concat of a 7-bit CRC plus an extra stop bit on the LSB
- * making the output 8-bits wide
- */
+ ;
+ ; Crc7Calc subroutine performs a CRC7 check on either a 40-bit or
+ ; 120-bit input (fed byte by byte via R6)
+ ; R8 is used for the address of the input byte (later stored in R6)
+ ; R7 is used to for the CRC7 result
+ ; R14 is used for the total number of iterations/bits (either 40 or 120)
+ ; R12-R15 are used for intermediate calculations
+ ;
+ ; Since a command is 6 bytes long we write the resulting CRC7 result back into RAM
+ ; so you can later send a command over USCI w/o calculating the CRC7 whilst transmitting
+ ;
+ ; The result returned is a concat of a 7-bit CRC plus an extra stop bit on the LSB
+ ; making the output 8-bits wide
+ ;
 Crc7Calc:
 	; use register r6 and r7 as our working register, save context onto stack
 	push.w   r6  ; used for input byte for CRC7
@@ -132,10 +132,10 @@ AlgoDone:
 	ret  ; crc7
 
 
-/*
- * InitSdSpiBus performs the basic SD card SPI startup sequence
- * (sending 74 clocks whilst CS line is held high)
- */
+ ;
+ ; InitSdSpiBus performs the basic SD card SPI startup sequence
+ ; (sending 74 clocks whilst CS line is held high)
+ ;
 InitSdSpiBus:
 	; drive clock for 74 clocks (minimum) whilst CS is held high
 	bis.b    #CS, &P1OUT ; pre-drive cs output high (active low)
@@ -156,14 +156,14 @@ RxFlagPollInitFunc:
 
 	ret  ; InitSdSpiBus
 
-/*
- * CmdHighestByteToRam transfers the highest CMD byte to RAM
- * Highest byte of a SD CMD command is: 0k xxxxxx,
- * where k = 1 transmission to host, 6-bit xx field is the binary representation of the command
- * start bit (MSB) is always 0
- * e.g. CMD 17 the 6-bit field is 010001, max val is 111111 --> 63
- * R14 is used for the CMD indec (which should be less than 63)
- */
+ ;
+ ; CmdHighestByteToRam transfers the highest CMD byte to RAM
+ ; Highest byte of a SD CMD command is: 0k xxxxxx,
+ ; where k = 1 transmission to host, 6-bit xx field is the binary representation of the command
+ ; start bit (MSB) is always 0
+ ; e.g. CMD 17 the 6-bit field is 010001, max val is 111111 --> 63
+ ; R14 is used for the CMD indec (which should be less than 63)
+ ;
 CmdHighestByteToRam:
 	; 1 indicates direction of transmission 1 is master to host
 	; assuming we will always send a 1 for transmission direction
