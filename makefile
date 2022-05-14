@@ -14,11 +14,11 @@ LD = msp430-elf-ld
 GDB = msp430-elf-gdb
 
 AFLAGS = -D --warn
-LFLAGS = -L $(SUPPORT_LINKS) -m msp430elf -T $(MCU).ld
+LFLAGS = -L $(SUPPORT_LINKS) --warn-section-align --warn-unresolved-symbols -q -m msp430elf -T $(MCU).ld
 
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)
-	AFLAGS += -g --gdwarf-2
+	AFLAGS += -g --gdwarf-2 --defsym DEBUG=1
 endif
 
 ENTRY_SECT ?= Reset
