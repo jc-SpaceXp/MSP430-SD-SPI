@@ -153,6 +153,7 @@ DataTxRxInitFunc:
 RxFlagPollInitFunc:
 	bit.b    #UCB0RXIFG, &IFG2  ; check if transfer is complete
 	jz       RxFlagPollInitFunc
+	cmp.b    #0, &UCB0RXBUF    ; clear RXFIG
 	dec.b    r5
 	jnz      TxFlagPollInitFunc    ; make sure TXBUF is free (it should be)
 	; enable TX RX interrupts?

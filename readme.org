@@ -19,19 +19,17 @@ With the requirements satisfied. It is as simple as:
 
 ** Logic Analyser Traces
   - This section highlights some minor analysis from my [[file:traces/trace_out.sr][captured signal traces]] using sigrok/pulseview
+  - For these traces I used sparkfuns SD card breakout board
 *** Init Sequence
     [[file:traces/screenshots/01_overall.png]]
     - CS is held high (inactive)
     - MOSI is also held high (giving 0xFF for the byte transmitted)
-    - Generated 12 bytes (96 clocks) of transmission (clearer in my [[file:traces/trace_out.sr][pulseview traces]] when looking at the markers)
+    - Generated 12 bytes (96 clocks) of transmission
 *** Sending CMD 0
-    [[file:traces/screenshots/02_cmd_transmission.png]]
+    [[file:traces/screenshots/02_cmd0_transmission.png]]
     - You can see the complete command and response to/from the SD card in the above picture
     - The SD card (SPI mode) decoder is provided to keep the annotations to a minimum
-    - Notice that there is an error in the 8th byte when waiting for a response from the SD card
-    - The CS line is drive high (indicating the end of transmission) before the byte has been fully transmitted
-    - More noticeable in the image below
-    [[file:traces/screenshots/03_cmd_response.png]]
+    - The R1 response is 0x01 indicating the card is in an idle state and therefore initialisation was successful
 ** License
 
 This project is zlib licensed, as found in the [[file:LICENSE][LICENSE]] file.
