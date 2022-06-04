@@ -21,13 +21,15 @@ CmdBytes: .space 6, 0    ; reserve 6 bytes and fill w/ 0s
 
 	.equ LED1,    BIT0  ; debug LED
 	.equ DELAYLOOPS, 100
+	.equ STARTUP_DELAY, 500
 
-	.equ INIT_TX_COUNT, 10  ; total number of clocks is INIT_TX_COUNT * 8
+	.equ INIT_TX_COUNT, 12  ; total number of clocks is INIT_TX_COUNT * 8
+	.equ SPI_DUMMY_BYTE, 0xFF
 
 	; commands
 	.equ CMD_BYTES, 6
 	.equ CMD_MASK, 0b111111
-	.equ CMD_TRANS_BIT, 0x40
+	.equ CMD_TRANS_BIT,  0x40
 
 	.equ CRC7_MSB_OUT_MASK, 0x40 ; CRC7 is 7 bits wide hence the MSB being 0x40 not 0x80
 	.equ CRC7_BIT2_MASK,    0x04 ; BIT2 mask before the left-shift into BIT3
@@ -135,6 +137,7 @@ AlgoDone:
  ;
  ; InitSdSpiBus performs the basic SD card SPI startup sequence
  ; (sending 74 clocks whilst CS line is held high)
+ ; clock must be betweeb 100-400 kHz during this sequence
  ;
 InitSdSpiBus:
 	; drive clock for 74 clocks (minimum) whilst CS is held high
@@ -146,7 +149,7 @@ TxFlagPollInitFunc:
 	bit.b    #UCB0TXIFG, &IFG2
 	jz       TxFlagPollInitFunc
 DataTxRxInitFunc:
-	mov.b    #0, &UCB0TXBUF  ; ignored while CS is held high
+	mov.b    #SPI_DUMMY_BYTE, &UCB0TXBUF  ; ignored while CS is held high
 RxFlagPollInitFunc:
 	bit.b    #UCB0RXIFG, &IFG2  ; check if transfer is complete
 	jz       RxFlagPollInitFunc
@@ -159,40 +162,78 @@ RxFlagPollInitFunc:
  ;
  ; CmdHighestByteToRam transfers the highest CMD byte to RAM
  ; Highest byte of a SD CMD command is: 0k xxxxxx,
- ; where k = 1 transmission to host, 6-bit xx field is the binary representation of the command
- ; start bit (MSB) is always 0
+ ; where 1) k = direction of transmission (1 is master to slave),
+ ;       2) 6-bit xx field is the binary representation of the command
+ ;       3) start bit (MSB) is always 0
  ; e.g. CMD 17 the 6-bit field is 010001, max val is 111111 --> 63
- ; R14 is used for the CMD indec (which should be less than 63)
+ ; R14 is used for the CMD index (which should be less than 63)
  ;
 CmdHighestByteToRam:
-	; 1 indicates direction of transmission 1 is master to host
 	; assuming we will always send a 1 for transmission direction
 	and.b    #CMD_MASK, r14  ; in the unlikely case we pass a arg larger than 63 to r14, also clears MSB as a side effect
-	bis.b    #CMD_TRANS_BIT, r14  ; lazy, set 1 for transmission bit
+	bis.b    #CMD_TRANS_BIT, r14
 	mov.b    r14, &CmdBytes  ; send byte to RAM
 
 	ret  ; CMDHighestByte
 
-/*
-; Send a specific SD SPI CMD to the SD card
-; reads from a fixed location (array) in RAM
-CommandSpi:
-	bic.b    #CS, &P1OUT ; assert CS line to communicate w/ SD slave device
-	mov.b    #CMD_BYTES, r5
+
+ ; SendCmdSpi sends a specific SD SPI CMD to the SD card
+ ; reads from a fixed location (array) in RAM
+ ; R8 is used for the array index of the CMD bytes
+ ; R6 is used to store the current CMD byte to be transmitted
+ ; R14 is used for the number of iterations (total number of CMD bytes to send)
+SendCmdSpi:
+	mov.w    #CmdBytes, r8  ; move address of CmdBytes to r8
+	mov.b    #CMD_BYTES, r14
+	bic.b    #CS, &P1OUT ; assert CS line low to communicate w/ SD slave device
+SendNewByte:
+	mov.b    @r8+, r6   ; move value pointed to by r8 into r6
 TxFlagPollCmdSpi:
 	; if we can write to the TxBuffer
 	bit.b    #UCB0TXIFG, &IFG2
 	jz       TxFlagPollCmdSpi
 DataTxRxCmdSpi:
-	mov.b    #0, &UCB0TXBUF  ; ignored while CS is held high
+	mov.b    r6, &UCB0TXBUF
 RxFlagPollCmdSpi:
 	bit.b    #UCB0RXIFG, &IFG2  ; check if transfer is complete
 	jz       RxFlagPollCmdSpi
-	dec.b    r5
-	jnz      TxFlagPollCmdSpi    ; make sure TXBUF is free (it should be)
+	cmp.b    #0, &UCB0RXBUF    ; clear RXFIG
+	dec.b    r14            ; decrement counter
+	jnz      SendNewByte
 
-	ret
-*/
+	ret ; SendCmdSpi
+
+ ; WaitForResponse will keep sending clocks to the SD card until it
+ ; reads a valid response (by continually sending 0xFF over the MOSI line
+ ; and then probing the RXBUF input)
+ ; R14 is used for the number of iterations (NCr)
+WaitForResponse:
+	mov.b    #8, r14   ; maximum number of bytes to wait (Ncr)
+TxFlagPollResp:
+	; if we can write to the TxBuffer do
+	bit.b    #UCB0TXIFG, &IFG2
+	jz       TxFlagPollResp
+DataTxRxResp:
+	mov.b    #SPI_DUMMY_BYTE, &UCB0TXBUF  ; send 0xFF to recieve a response
+RxFlagPollResp:
+	bit.b    #UCB0RXIFG, &IFG2  ; check if transfer is complete
+	jz       RxFlagPollResp
+RxCheck:
+	cmp.b    #0x01, &UCB0RXBUF  ; check for response
+	jz       RecvResp
+ReLoop:
+	dec.b    r14
+	jnz      TxFlagPollResp
+	; drive CS high after exhausting all attempts
+	bis.b    #CS, &P1OUT ; drive cs output high (active low) (re-add this line)
+	jmp      EarlyRet
+RecvResp:
+	bis.b    #CS, &P1OUT ; drive cs output high (active low) (re-add this line)
+	bis.b    #LED1, &P1OUT  ; recieved a valid response (continue coding)
+EarlyRet:
+	ret  ; WaitForResponse
+
+
 
 Reset:
 	mov.w    #WDTPW | WDTHOLD, &WDTCTL ; stop watchdog timer
@@ -200,14 +241,16 @@ Reset:
 
 	; USCI setup
 	bis.b    #UCSWRST, &UCB0CTL1 ; reset USCI_B
-	bis.b    #UCMST | UCMSB | UCMODE_0, &UCB0CTL0 ; MSP430 is SPI master, 3 pin SPI, MSB out first
+	; MSP430 is SPI master, SPI mode 0 (CPHA 0 (UCCKPH 1), CPOL 0), MSB out (first), 3 pin SPI
+	bis.b    #UCCKPH | UCMST | UCMSB | UCMODE_0, &UCB0CTL0
 	bis.b    #SUB_CLK_SEL_BIT, &UCB0CTL1 ; clock is SMCLK (~1MHz upon reset)
 
 	; pin setup for USCI_B0 (check your device specific datasheet, there are 2 PxSEL registers for each port)
 	bis.b    #MOSI | MISO | SPI_CLK, &P1SEL ; configure pins for USCI
 	bis.b    #MOSI | MISO | SPI_CLK, &P1SEL2 ; configure pins for USCI
-	;bis.b    #MISO, &P1REN ; use pull-down res for MISO
-	mov.b    #1, &UCB0BR0 ; SMCLK / 1
+	;bis.b    #MISO, &P1REN ; use internal pull-down res for MISO
+
+	mov.b    #4, &UCB0BR0 ; SMCLK / 4 ---> ~250kHz (see: InitSdSpiBus subroutine comments)
 	mov.b    #0, &UCB0BR1
 
 	bic.b    #UCSWRST, &UCB0CTL1 ; enable USCI_B after configuration
@@ -219,9 +262,17 @@ Reset:
 	bic.b    #LED1, &P1OUT
 	bis.b    #LED1, &P1DIR
 
-	;call   #InitSdSpiBus
+	; wait 1ms for SD card (each clock is 1us) need to wait at least 1000 clocks
+	; only needed if MSP430 is powered on at the same time as the SD card
+	; clock divider is /4 (so we are now delaying for ~4ms)
+	mov.b    #STARTUP_DELAY, r14
+StartupDelay:
+	dec.b    r14          ; 1 cycle
+	jnz      StartupDelay ; 2 cycles, 3 cycles per loop
 
-	; move CMD_0 to RAM, need to pre-calculate the CRC7 as it takes up too many clock cycles
+SpiComm:
+	call   #InitSdSpiBus
+
 	mov.b    #0, r14  ; CMD_index <= 63
 	call     #CmdHighestByteToRam
 	mov.b    #0x00, &CmdBytes + 1
@@ -230,38 +281,11 @@ Reset:
 	mov.b    #0x00, &CmdBytes + 4
 	mov.b    #CRC7_CMD_ILENGTH, r14
 	call     #Crc7Calc
-	cmp.b    #0b10010101, &CmdBytes + 5
-	jnz      InfLoop
-	bis.b    #LED1, &P1OUT  ; TRUE
-	jmp      InfLoop
-	; verified CRC7 7 works for CMD_0 w/ 0's for ARG
 
-	; old USCI loopback code below
-TxFlagPoll:
-	; if we can write to the TxBuffer
-	bit.b    #UCB0TXIFG, &IFG2
-	jz       TxFlagPoll
-DataTxRx:
-	bic.b    #CS, &P1OUT ; drive cs output low (active low)
-	bic.b    #LED1, &P1OUT ; clear LED on TxRx
-	mov.b    r11, &UCB0TXBUF
-RxFlagPoll:
-	bit.b    #UCB0RXIFG, &IFG2  ; check if transfer is complete
-	jz       RxFlagPoll
-	bis.b    #CS, &P1OUT ; drive cs output high (active low)
-	cmp.b    r11, &UCB0RXBUF
-	jnz      DelayTx
-	bis.b    #LED1, &P1OUT  ; if r11 (TXBUF) == RXBUF set LED1
+	call     #SendCmdSpi  ; sending command 0
+	call     #WaitForResponse
+	jmp      InfLoop  ; nothing to do here so goto InfLoop
 
-	; delay between transfers
-DelayTx:
-	dec.w    r7
-	jnz      DelayTx
-
-	mov.w    #DELAYLOOPS, r7  ; reset loop counter
-	inc.b    r11
-	bit.b    #8, r11
-	jz       TxFlagPoll  ; restart SPI transfer
 InfLoop:
 	jmp      InfLoop
 

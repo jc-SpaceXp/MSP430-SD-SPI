@@ -1,0 +1,504 @@
+[General]
+decode_signals=1
+meta_objs=31
+views=1
+
+[10]
+color=4279638298
+conv_options=0
+conversion_type=0
+enabled=false
+name=10
+
+[11]
+color=4287582722
+conv_options=0
+conversion_type=0
+enabled=false
+name=11
+
+[12]
+color=4291559424
+conv_options=0
+conversion_type=0
+enabled=false
+name=12
+
+[13]
+color=4294277376
+conv_options=0
+conversion_type=0
+enabled=false
+name=13
+
+[14]
+color=4293776384
+conv_options=0
+conversion_type=0
+enabled=false
+name=14
+
+[15]
+color=4285780502
+conv_options=0
+conversion_type=0
+enabled=false
+name=15
+
+[2]
+color=4291559424
+conv_options=0
+conversion_type=0
+enabled=false
+name=2
+
+[3]
+color=4294277376
+conv_options=0
+conversion_type=0
+enabled=false
+name=3
+
+[4]
+color=4293776384
+conv_options=0
+conversion_type=0
+enabled=false
+name=4
+
+[7]
+color=4285878395
+conv_options=0
+conversion_type=0
+enabled=false
+name=7
+
+[8]
+color=4287138437
+conv_options=0
+conversion_type=0
+enabled=false
+name=8
+
+[9]
+color=4293848812
+conv_options=0
+conversion_type=0
+enabled=false
+name=9
+
+[CLK]
+color=4279638298
+conv_options=0
+conversion_type=0
+enabled=true
+name=CLK
+
+[CS]
+color=4287582722
+conv_options=0
+conversion_type=0
+enabled=true
+name=CS
+
+[MISO]
+color=4285780502
+conv_options=0
+conversion_type=0
+enabled=true
+name=MISO
+
+[MOSI]
+color=4281623972
+conv_options=0
+conversion_type=0
+enabled=true
+name=MOSI
+
+[decode_signal0]
+channel0\assigned_signal_name=CLK
+channel0\initial_pin_state=2
+channel0\name=CLK
+channel1\assigned_signal_name=MISO
+channel1\initial_pin_state=2
+channel1\name=MISO
+channel2\assigned_signal_name=MOSI
+channel2\initial_pin_state=2
+channel2\name=MOSI
+channel3\assigned_signal_name=CS
+channel3\initial_pin_state=2
+channel3\name=CS#
+channels=4
+color=4281510450
+conv_options=0
+conversion_type=0
+decoder0\ann_class0\visible=true
+decoder0\ann_class1\visible=true
+decoder0\ann_class2\visible=true
+decoder0\ann_class3\visible=true
+decoder0\ann_class4\visible=true
+decoder0\ann_class5\visible=true
+decoder0\ann_class6\visible=true
+decoder0\id=spi
+decoder0\options=0
+decoder0\row0\visible=true
+decoder0\row1\visible=true
+decoder0\row2\visible=true
+decoder0\row3\visible=true
+decoder0\row4\visible=true
+decoder0\row5\visible=true
+decoder0\row6\visible=true
+decoder0\visible=true
+decoder1\ann_class0\visible=true
+decoder1\ann_class1\visible=true
+decoder1\ann_class10\visible=true
+decoder1\ann_class100\visible=true
+decoder1\ann_class101\visible=true
+decoder1\ann_class102\visible=true
+decoder1\ann_class103\visible=true
+decoder1\ann_class104\visible=true
+decoder1\ann_class105\visible=true
+decoder1\ann_class106\visible=true
+decoder1\ann_class107\visible=true
+decoder1\ann_class108\visible=true
+decoder1\ann_class109\visible=true
+decoder1\ann_class11\visible=true
+decoder1\ann_class110\visible=true
+decoder1\ann_class111\visible=true
+decoder1\ann_class112\visible=true
+decoder1\ann_class113\visible=true
+decoder1\ann_class114\visible=true
+decoder1\ann_class115\visible=true
+decoder1\ann_class116\visible=true
+decoder1\ann_class117\visible=true
+decoder1\ann_class118\visible=true
+decoder1\ann_class119\visible=true
+decoder1\ann_class12\visible=true
+decoder1\ann_class120\visible=true
+decoder1\ann_class121\visible=true
+decoder1\ann_class122\visible=true
+decoder1\ann_class123\visible=true
+decoder1\ann_class124\visible=true
+decoder1\ann_class125\visible=true
+decoder1\ann_class126\visible=true
+decoder1\ann_class127\visible=true
+decoder1\ann_class128\visible=true
+decoder1\ann_class129\visible=true
+decoder1\ann_class13\visible=true
+decoder1\ann_class130\visible=true
+decoder1\ann_class131\visible=true
+decoder1\ann_class132\visible=true
+decoder1\ann_class133\visible=true
+decoder1\ann_class134\visible=true
+decoder1\ann_class14\visible=true
+decoder1\ann_class15\visible=true
+decoder1\ann_class16\visible=true
+decoder1\ann_class17\visible=true
+decoder1\ann_class18\visible=true
+decoder1\ann_class19\visible=true
+decoder1\ann_class2\visible=true
+decoder1\ann_class20\visible=true
+decoder1\ann_class21\visible=true
+decoder1\ann_class22\visible=true
+decoder1\ann_class23\visible=true
+decoder1\ann_class24\visible=true
+decoder1\ann_class25\visible=true
+decoder1\ann_class26\visible=true
+decoder1\ann_class27\visible=true
+decoder1\ann_class28\visible=true
+decoder1\ann_class29\visible=true
+decoder1\ann_class3\visible=true
+decoder1\ann_class30\visible=true
+decoder1\ann_class31\visible=true
+decoder1\ann_class32\visible=true
+decoder1\ann_class33\visible=true
+decoder1\ann_class34\visible=true
+decoder1\ann_class35\visible=true
+decoder1\ann_class36\visible=true
+decoder1\ann_class37\visible=true
+decoder1\ann_class38\visible=true
+decoder1\ann_class39\visible=true
+decoder1\ann_class4\visible=true
+decoder1\ann_class40\visible=true
+decoder1\ann_class41\visible=true
+decoder1\ann_class42\visible=true
+decoder1\ann_class43\visible=true
+decoder1\ann_class44\visible=true
+decoder1\ann_class45\visible=true
+decoder1\ann_class46\visible=true
+decoder1\ann_class47\visible=true
+decoder1\ann_class48\visible=true
+decoder1\ann_class49\visible=true
+decoder1\ann_class5\visible=true
+decoder1\ann_class50\visible=true
+decoder1\ann_class51\visible=true
+decoder1\ann_class52\visible=true
+decoder1\ann_class53\visible=true
+decoder1\ann_class54\visible=true
+decoder1\ann_class55\visible=true
+decoder1\ann_class56\visible=true
+decoder1\ann_class57\visible=true
+decoder1\ann_class58\visible=true
+decoder1\ann_class59\visible=true
+decoder1\ann_class6\visible=true
+decoder1\ann_class60\visible=true
+decoder1\ann_class61\visible=true
+decoder1\ann_class62\visible=true
+decoder1\ann_class63\visible=true
+decoder1\ann_class64\visible=true
+decoder1\ann_class65\visible=true
+decoder1\ann_class66\visible=true
+decoder1\ann_class67\visible=true
+decoder1\ann_class68\visible=true
+decoder1\ann_class69\visible=true
+decoder1\ann_class7\visible=true
+decoder1\ann_class70\visible=true
+decoder1\ann_class71\visible=true
+decoder1\ann_class72\visible=true
+decoder1\ann_class73\visible=true
+decoder1\ann_class74\visible=true
+decoder1\ann_class75\visible=true
+decoder1\ann_class76\visible=true
+decoder1\ann_class77\visible=true
+decoder1\ann_class78\visible=true
+decoder1\ann_class79\visible=true
+decoder1\ann_class8\visible=true
+decoder1\ann_class80\visible=true
+decoder1\ann_class81\visible=true
+decoder1\ann_class82\visible=true
+decoder1\ann_class83\visible=true
+decoder1\ann_class84\visible=true
+decoder1\ann_class85\visible=true
+decoder1\ann_class86\visible=true
+decoder1\ann_class87\visible=true
+decoder1\ann_class88\visible=true
+decoder1\ann_class89\visible=true
+decoder1\ann_class9\visible=true
+decoder1\ann_class90\visible=true
+decoder1\ann_class91\visible=true
+decoder1\ann_class92\visible=true
+decoder1\ann_class93\visible=true
+decoder1\ann_class94\visible=true
+decoder1\ann_class95\visible=true
+decoder1\ann_class96\visible=true
+decoder1\ann_class97\visible=true
+decoder1\ann_class98\visible=true
+decoder1\ann_class99\visible=true
+decoder1\id=sdcard_spi
+decoder1\options=0
+decoder1\row0\visible=true
+decoder1\row1\visible=true
+decoder1\visible=true
+decoders=2
+enabled=true
+name=SD card (SPI mode)
+
+[meta_obj0]
+assoc_view=0
+text=-2191 \x3bcs
+time=22 serialization::archive 19 0 0 0 0 3 4560532 20524237 10722817 68024240 30849704 0 0 0 6
+type=time_marker
+
+[meta_obj1]
+assoc_view=0
+text=Init Byte 1
+time=22 serialization::archive 19 0 0 0 0 3 4560550 1 87554860 53123604 50625419 0 0 0 6
+type=time_marker
+
+[meta_obj10]
+assoc_view=0
+text=Init Byte 9
+time=22 serialization::archive 19 0 0 0 0 3 4585099 99999998 64087385 50380803 64465713 0 0 0 6
+type=time_marker
+
+[meta_obj11]
+assoc_view=0
+text=Init Byte 10
+time=22 serialization::archive 19 0 0 0 0 3 4587936 30047645 73763342 90773727 10637878 0 0 0 6
+type=time_marker
+
+[meta_obj12]
+assoc_view=0
+text=Init Byte 11
+time=22 serialization::archive 19 0 0 0 0 3 4590848 70226021 69960778 69953634 9255219 0 0 0 6
+type=time_marker
+
+[meta_obj13]
+assoc_view=0
+text=Init Byte 12
+time=22 serialization::archive 19 0 0 0 0 3 4593699 99999998 94583879 72263153 64241600 0 0 0 6
+type=time_marker
+
+[meta_obj14]
+assoc_view=0
+text=Init End
+time=22 serialization::archive 19 0 0 0 0 3 4596400 1 15875309 34775713 83118629 0 0 0 6
+type=time_marker
+
+[meta_obj15]
+assoc_view=0
+text=Cmd Start
+time=22 serialization::archive 19 0 0 0 0 3 4740949 52471115 17928616 77986383 3952809 0 0 0 6
+type=time_marker
+
+[meta_obj16]
+assoc_view=0
+text=Cmd Byte 1
+time=22 serialization::archive 19 0 0 0 0 3 4742349 99999998 40781583 77087675 3499984 0 0 0 6
+type=time_marker
+
+[meta_obj17]
+assoc_view=0
+text=Cmd Byte 2
+time=22 serialization::archive 19 0 0 0 0 3 4745199 99999998 27650754 1403009 89151000 0 0 0 6
+type=time_marker
+
+[meta_obj18]
+assoc_view=0
+text=Cmd Byte 3
+time=22 serialization::archive 19 0 0 0 0 3 4748099 99999998 84408907 74654690 17624855 0 0 0 6
+type=time_marker
+
+[meta_obj19]
+assoc_view=0
+text=Cmd Byte 4
+time=22 serialization::archive 19 0 0 0 0 3 4750948 63270158 43189646 4314068 96784925 0 0 0 6
+type=time_marker
+
+[meta_obj2]
+assoc_view=0
+text=Init Byte 1 End
+time=22 serialization::archive 19 0 0 0 0 3 4563250 43258177 14068716 28088918 17464904 0 0 0 6
+type=time_marker
+
+[meta_obj20]
+assoc_view=0
+text=Cmd Byte 5
+time=22 serialization::archive 19 0 0 0 0 3 4753799 99999998 58147248 23285359 88926887 0 0 0 6
+type=time_marker
+
+[meta_obj21]
+assoc_view=0
+text=Cmd Byte 6
+time=22 serialization::archive 19 0 0 0 0 3 4756699 86438827 8541010 29966687 60811044 0 0 0 6
+type=time_marker
+
+[meta_obj22]
+assoc_view=0
+text=Resp Byte 1
+time=22 serialization::archive 19 0 0 0 0 3 4759549 99999999 1774572 20852375 3051757 0 0 0 6
+type=time_marker
+
+[meta_obj23]
+assoc_view=0
+text=Resp Byte 2
+time=22 serialization::archive 19 0 0 0 0 3 4762399 99999998 88643742 45167709 88702774 0 0 0 6
+type=time_marker
+
+[meta_obj24]
+assoc_view=0
+text=Resp Byte 3
+time=22 serialization::archive 19 0 0 0 0 3 4765299 99999999 45401896 18419390 17176628 0 0 0 6
+type=time_marker
+
+[meta_obj25]
+assoc_view=0
+text=Resp Byte 4
+time=22 serialization::archive 19 0 0 0 0 3 4768149 99999999 32271066 42734725 2827644 0 0 0 6
+type=time_marker
+
+[meta_obj26]
+assoc_view=0
+text=Resp Byte 5
+time=22 serialization::archive 19 0 0 0 0 3 4770999 99999999 19140236 67050059 88478660 0 0 0 6
+type=time_marker
+
+[meta_obj27]
+assoc_view=0
+text=Resp Byte 6
+time=22 serialization::archive 19 0 0 0 0 3 4773899 99999999 75898390 40301740 16952514 0 0 0 6
+type=time_marker
+
+[meta_obj28]
+assoc_view=0
+text=Resp Byte 7
+time=22 serialization::archive 19 0 0 0 0 3 4776749 99999999 62767560 64617075 2603530 0 0 0 6
+type=time_marker
+
+[meta_obj29]
+assoc_view=0
+text=Resp Byte 8
+time=22 serialization::archive 19 0 0 0 0 3 4779599 99999999 49636730 88932409 88254547 0 0 0 6
+type=time_marker
+
+[meta_obj3]
+assoc_view=0
+text=Init Byte 2
+time=22 serialization::archive 19 0 0 0 0 3 4565049 99999998 16225226 82300768 79262924 0 0 0 6
+type=time_marker
+
+[meta_obj30]
+assoc_view=0
+text=Cmd End
+time=22 serialization::archive 19 0 0 0 0 3 4780100 2 4437355 93289602 54788398 0 0 0 6
+type=time_marker
+
+[meta_obj4]
+assoc_view=0
+text=Init Byte 3
+time=22 serialization::archive 19 0 0 0 0 3 4567899 99999998 3094397 6616103 64913940 0 0 0 6
+type=time_marker
+
+[meta_obj5]
+assoc_view=0
+text=Init Byte 4
+time=22 serialization::archive 19 0 0 0 0 3 4570749 54908571 55307552 58503216 54056077 0 0 0 6
+type=time_marker
+
+[meta_obj6]
+assoc_view=0
+text=Init Byte 5
+time=22 serialization::archive 19 0 0 0 0 3 4573649 99999998 46721721 4183118 79038810 0 0 0 6
+type=time_marker
+
+[meta_obj7]
+assoc_view=0
+text=Init Byte 6
+time=22 serialization::archive 19 0 0 0 0 3 4576499 99999998 33590891 28498453 64689826 0 0 0 6
+type=time_marker
+
+[meta_obj8]
+assoc_view=0
+text=Init Byte 7
+time=22 serialization::archive 19 0 0 0 0 3 4579349 94905069 26181785 46555088 67202719 0 0 0 6
+type=time_marker
+
+[meta_obj9]
+assoc_view=0
+text=Init Byte 8
+time=22 serialization::archive 19 0 0 0 0 3 4582248 89762719 64040393 17251705 38519056 0 0 0 6
+type=time_marker
+
+[view0]
+10\trace_height=44
+11\trace_height=44
+12\trace_height=44
+13\trace_height=44
+14\trace_height=44
+15\trace_height=44
+2\trace_height=44
+3\trace_height=44
+4\trace_height=44
+7\trace_height=44
+8\trace_height=44
+9\trace_height=44
+CLK\trace_height=44
+CS\trace_height=44
+MISO\trace_height=44
+MOSI\trace_height=44
+offset=22 serialization::archive 19 0 0 0 0 3 4231323 63618526 1462165 8442565 62968641 0 0 0 6
+scale=4.721564024090003e-06
+segment_display_mode=3
+splitter_state=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\0\xd1\0\0\x6\xaa\x1\0\0\0\x1\x1\0\0\0\x1\0)
+v_offset=-83
+zero_offset=22 serialization::archive 19 0 0 0 0 0 0 0 0 0 0 0 0 0 6
