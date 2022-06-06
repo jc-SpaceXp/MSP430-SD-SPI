@@ -208,8 +208,11 @@ RxFlagPollCmdSpi:
  ; reads a valid response (by continually sending 0xFF over the MOSI line
  ; and then probing the RXBUF input)
  ; R14 is used for the number of iterations (NCr)
+ ;
+ ; When the SD card responds the first byte recieved is the R1 response
+ ; currently this function is checking for a R1 response of 0x01 (idle state)
 WaitForResponse:
-	mov.b    #8, r14   ; maximum number of bytes to wait (Ncr)
+	mov.b    #8, r14   ; maximum number of bytes to wait (NCr)
 TxFlagPollResp:
 	; if we can write to the TxBuffer do
 	bit.b    #UCB0TXIFG, &IFG2
@@ -225,14 +228,32 @@ RxCheck:
 ReLoop:
 	dec.b    r14
 	jnz      TxFlagPollResp
-	; drive CS high after exhausting all attempts
-	bis.b    #CS, &P1OUT ; drive cs output high (active low) (re-add this line)
 	jmp      EarlyRet
 RecvResp:
-	bis.b    #CS, &P1OUT ; drive cs output high (active low) (re-add this line)
 	bis.b    #LED1, &P1OUT  ; recieved a valid response (continue coding)
 EarlyRet:
 	ret  ; WaitForResponse
+
+
+ ; GetR7Response will send enough clocks to the SD card to recieve a R7 response
+ ; R14 is used for the number of iterations (number of bytes of R7)
+GetR7Response:
+	mov.b    #4, r14   ; total number of bytes of R7 (excluding initial R1 byte)
+TxFlagPollRespR7:
+	; if we can write to the TxBuffer do
+	bit.b    #UCB0TXIFG, &IFG2
+	jz       TxFlagPollRespR7
+DataTxRxRespR7:
+	mov.b    #SPI_DUMMY_BYTE, &UCB0TXBUF  ; send 0xFF to recieve a response
+RxFlagPollRespR7:
+	bit.b    #UCB0RXIFG, &IFG2  ; check if transfer is complete
+	jz       RxFlagPollRespR7
+	cmp.b    #0, &UCB0RXBUF    ; clear RXFIG
+ReLoopR7:
+	dec.b    r14
+	jnz      TxFlagPollRespR7
+
+	ret  ; GetR7Response
 
 
  ; GenerateCmdBytes macro will generate the 6 CMD bytes in RAM
@@ -299,10 +320,16 @@ StartupDelay:
 SpiComm:
 	call   #InitSdSpiBus
 
-	;GenerateCmdBytes 0, 0x00, 0x00, 0x00, 0x00
 	GenerateCmdBytes index=0  ; default val for 32-bit arg is 0
 	call     #SendCmdSpi  ; sending command 0
 	call     #WaitForResponse
+
+	; CMD8, VHS = 1, pattern = AA
+	GenerateCmdBytes 8, 0x00, 0x00, 0x01, 0xAA
+	call     #SendCmdSpi  ; sending command 8
+	call     #WaitForResponse
+	call     #GetR7Response
+
 	jmp      InfLoop  ; nothing to do here so goto InfLoop
 
 InfLoop:

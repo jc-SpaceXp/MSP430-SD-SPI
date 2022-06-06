@@ -25,11 +25,17 @@ With the requirements satisfied. It is as simple as:
     - CS is held high (inactive)
     - MOSI is also held high (giving 0xFF for the byte transmitted)
     - Generated 12 bytes (96 clocks) of transmission
+    - This is so the SD card enters SPI mode
 *** Sending CMD 0
     [[file:traces/screenshots/02_cmd0_transmission.png]]
     - You can see the complete command and response to/from the SD card in the above picture
     - The SD card (SPI mode) decoder is provided to keep the annotations to a minimum
     - The R1 response is 0x01 indicating the card is in an idle state and therefore initialisation was successful
+*** Sending CMD 8
+    [[file:traces/screenshots/03_cmd8_transmission.png]]
+    - With a R1 response of 0x01 this indicates a V2 spec SD card (as a invalid command would be seen from R1)
+    - The last two bytes in the R7 response are the ones we care about (as the reserved bits are zero)
+    - We can see they are 0x01 and 0xAA, where 0x01 shows that the current operating voltage is accepted, and 0xAA is simply the echo back of the check pattern from the CMD8 32-bit argument
 ** License
 
 This project is zlib licensed, as found in the [[file:LICENSE][LICENSE]] file.
