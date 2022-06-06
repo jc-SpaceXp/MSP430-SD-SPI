@@ -19,7 +19,7 @@ With the requirements satisfied. It is as simple as:
 
 ** Logic Analyser Traces
   - This section highlights some minor analysis from my [[file:traces/trace_out.sr][captured signal traces]] using sigrok/pulseview
-  - For these traces I used sparkfuns SD card breakout board
+  - For these traces I used sparkfuns SD card breakout board with the Samsung Evo Plus 32Gb micro SD card
 *** Init Sequence
     [[file:traces/screenshots/01_overall.png]]
     - CS is held high (inactive)

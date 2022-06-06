@@ -235,6 +235,31 @@ EarlyRet:
 	ret  ; WaitForResponse
 
 
+ ; GenerateCmdBytes macro will generate the 6 CMD bytes in RAM
+ ; this should be called before any call to the SendCmdSpi subroutine
+ ;
+ ; 32-bit arg is broken down into 8-bit chunks
+ ; upper 16-bits is split into LSB and MSB --> arg_u16_lsb and arg_u16_msb
+ ; lower 16-bits is split into LSB and MSB --> arg_l16_lsb and arg_l16_msb
+ ;
+ ; when calling the macro the index should be a decimal and args should be in
+ ; hexadecimal (in a byte format)
+ ; If there is no 32-bit argument you can just call the macro w/ the index parameter
+.macro GenerateCmdBytes index, arg_u16_msb=0, arg_u16_lsb=0, arg_l16_msb=0, arg_l16_lsb=0
+	; Generate CMD index
+	mov.b    #\index, r14  ; CMD_index <= 63
+	call     #CmdHighestByteToRam
+	; Generate 32-bit CMD argument
+	mov.b    #\arg_u16_msb, &CmdBytes + 1
+	mov.b    #\arg_u16_lsb, &CmdBytes + 2
+	mov.b    #\arg_l16_msb, &CmdBytes + 3
+	mov.b    #\arg_l16_lsb, &CmdBytes + 4
+	; Generate C7C byte
+	mov.b    #CRC7_CMD_ILENGTH, r14
+	call     #Crc7Calc
+.endm
+
+
 
 Reset:
 	mov.w    #WDTPW | WDTHOLD, &WDTCTL ; stop watchdog timer
@@ -274,15 +299,8 @@ StartupDelay:
 SpiComm:
 	call   #InitSdSpiBus
 
-	mov.b    #0, r14  ; CMD_index <= 63
-	call     #CmdHighestByteToRam
-	mov.b    #0x00, &CmdBytes + 1
-	mov.b    #0x00, &CmdBytes + 2
-	mov.b    #0x00, &CmdBytes + 3
-	mov.b    #0x00, &CmdBytes + 4
-	mov.b    #CRC7_CMD_ILENGTH, r14
-	call     #Crc7Calc
-
+	;GenerateCmdBytes 0, 0x00, 0x00, 0x00, 0x00
+	GenerateCmdBytes index=0  ; default val for 32-bit arg is 0
 	call     #SendCmdSpi  ; sending command 0
 	call     #WaitForResponse
 	jmp      InfLoop  ; nothing to do here so goto InfLoop
