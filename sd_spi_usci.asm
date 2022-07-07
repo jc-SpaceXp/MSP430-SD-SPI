@@ -44,11 +44,11 @@ CmdBytes: .space 6, 0    ; reserve 6 bytes and fill w/ 0s
 
  ;
  ; Crc7Calc subroutine performs a CRC7 check on either a 40-bit or
- ; 120-bit input (fed byte by byte via R6)
- ; R8 is used for the address of the input byte (later stored in R6)
- ; R7 is used to for the CRC7 result
- ; R14 is used for the total number of iterations/bits (either 40 or 120)
- ; R12-R15 are used for intermediate calculations
+ ; 120-bit input (fed byte by byte via r6)
+ ; r8 is used for the address of the input byte (later stored in r6)
+ ; r7 is used to for the CRC7 result
+ ; r14 is used for the total number of iterations/bits (either 40 or 120)
+ ; r12-r15 are used for intermediate calculations
  ;
  ; Since a command is 6 bytes long we write the resulting CRC7 result back into RAM
  ; so you can later send a command over USCI w/o calculating the CRC7 whilst transmitting
@@ -167,7 +167,7 @@ RxFlagPollInitFunc:
  ;       2) 6-bit xx field is the binary representation of the command
  ;       3) start bit (MSB) is always 0
  ; e.g. CMD 17 the 6-bit field is 010001, max val is 111111 --> 63
- ; R14 is used for the CMD index (which should be less than 63)
+ ; r14 is used for the CMD index (which should be less than 63)
  ;
 CmdHighestByteToRam:
 	; assuming we will always send a 1 for transmission direction
@@ -180,9 +180,9 @@ CmdHighestByteToRam:
 
  ; SendCmdSpi sends a specific SD SPI CMD to the SD card
  ; reads from a fixed location (array) in RAM
- ; R8 is used for the array index of the CMD bytes
- ; R6 is used to store the current CMD byte to be transmitted
- ; R14 is used for the number of iterations (total number of CMD bytes to send)
+ ; r8 is used for the array index of the CMD bytes
+ ; r6 is used to store the current CMD byte to be transmitted
+ ; r14 is used for the number of iterations (total number of CMD bytes to send)
 SendCmdSpi:
 	mov.w    #CmdBytes, r8  ; move address of CmdBytes to r8
 	mov.b    #CMD_BYTES, r14
@@ -204,57 +204,89 @@ RxFlagPollCmdSpi:
 
 	ret ; SendCmdSpi
 
- ; WaitForResponse will keep sending clocks to the SD card until it
- ; reads a valid response (by continually sending 0xFF over the MOSI line
- ; and then probing the RXBUF input)
- ; R14 is used for the number of iterations (NCr)
+
+ ; CheckR1Byte will keep sending clocks to the SD card until it reads
+ ; the expected response (from R10, by continually sending 0xFF over
+ ; the MOSI line and then probing the RXBUF input) or until it has
+ ; exhuasted the NCr bytes response time (8 bytes)
+ ;
+ ; r14 is used for the number of iterations (NCr)
+ ; r10 is the expected result
+ ; r5 is then used to see if we have gotten the correct response or not
+ ; (0 indicates success, 1 indicates failure)
  ;
  ; When the SD card responds the first byte recieved is the R1 response
- ; currently this function is checking for a R1 response of 0x01 (idle state)
-WaitForResponse:
+CheckR1Byte:
 	mov.b    #8, r14   ; maximum number of bytes to wait (NCr)
-TxFlagPollResp:
+	mov.b    #1, r5
+	bic.b    #LED1, &P1OUT
+TxFlagPollRespR1:
 	; if we can write to the TxBuffer do
 	bit.b    #UCB0TXIFG, &IFG2
-	jz       TxFlagPollResp
-DataTxRxResp:
+	jz       TxFlagPollRespR1
+DataTxRxRespR1:
 	mov.b    #SPI_DUMMY_BYTE, &UCB0TXBUF  ; send 0xFF to recieve a response
-RxFlagPollResp:
+RxFlagPollRespR1:
 	bit.b    #UCB0RXIFG, &IFG2  ; check if transfer is complete
-	jz       RxFlagPollResp
-RxCheck:
-	cmp.b    #0x01, &UCB0RXBUF  ; check for response
-	jz       RecvResp
-ReLoop:
+	jz       RxFlagPollRespR1
+RxCheckR1:
+	cmp.b    r10, &UCB0RXBUF  ; check for response w/ r10
+	jz       RecvRespR1
+ReLoopR1:
 	dec.b    r14
-	jnz      TxFlagPollResp
-	jmp      EarlyRet
-RecvResp:
+	jnz      TxFlagPollRespR1
+	jmp      EarlyRetR1
+RecvRespR1:
 	bis.b    #LED1, &P1OUT  ; recieved a valid response (continue coding)
-EarlyRet:
-	ret  ; WaitForResponse
+	mov.b    #0, r5
+EarlyRetR1:
+	ret  ; CheckR1Byte
 
-
- ; GetR7Response will send enough clocks to the SD card to recieve a R7 response
- ; R14 is used for the number of iterations (number of bytes of R7)
-GetR7Response:
-	mov.b    #4, r14   ; total number of bytes of R7 (excluding initial R1 byte)
-TxFlagPollRespR7:
+ ; GetXBytes will keep sending clocks to the SD card until it recieves
+ ; X bytes of a response (by continually sending 0xFF over the MOSI line
+ ; r14 is used for the number of iterations (number of bytes of response)
+GetXBytesResponse:
 	; if we can write to the TxBuffer do
 	bit.b    #UCB0TXIFG, &IFG2
-	jz       TxFlagPollRespR7
-DataTxRxRespR7:
+	jz       GetXBytesResponse
+DataTxRxRespX:
 	mov.b    #SPI_DUMMY_BYTE, &UCB0TXBUF  ; send 0xFF to recieve a response
-RxFlagPollRespR7:
+RxFlagPollRespX:
 	bit.b    #UCB0RXIFG, &IFG2  ; check if transfer is complete
-	jz       RxFlagPollRespR7
+	jz       RxFlagPollRespX
 	cmp.b    #0, &UCB0RXBUF    ; clear RXFIG
-ReLoopR7:
+ReLoopX:
 	dec.b    r14
-	jnz      TxFlagPollRespR7
+	jnz      GetXBytesResponse
 
-	ret  ; GetR7Response
+	ret  ; GetXBytesResponse
 
+ ; 1 byte + R1 response
+.macro GetR2Response byte_count=1
+	mov.b    #\byte_count, r14
+	call     #GetXBytesResponse
+.endm
+
+ ; 4 bytes + R1 response
+.macro GetR3Response byte_count=4
+	mov.b    #\byte_count, r14
+	call     #GetXBytesResponse
+.endm
+
+ ; 4 bytes + R1 response
+.macro GetR7Response byte_count=4
+	mov.b    #\byte_count, r14
+	call     #GetXBytesResponse
+.endm
+
+ ; stops recieving/sending data when expected_value is found on MISO line, or
+ ; until it has exhuasted the NCr bytes response time (8 bytes)
+ ; r1 response, check r5 to see if R1 response == expected_value
+ ;              1 = failure, 0 = success
+.macro StopIfR1ResponseIs expected_value
+	mov.b    #\expected_value, r10
+	call     #CheckR1Byte
+.endm
 
  ; GenerateCmdBytes macro will generate the 6 CMD bytes in RAM
  ; this should be called before any call to the SendCmdSpi subroutine
@@ -322,13 +354,14 @@ SpiComm:
 
 	GenerateCmdBytes index=0  ; default val for 32-bit arg is 0
 	call     #SendCmdSpi  ; sending command 0
-	call     #WaitForResponse
+	StopIfR1ResponseIs 1
 
 	; CMD8, VHS = 1, pattern = AA
 	GenerateCmdBytes 8, 0x00, 0x00, 0x01, 0xAA
 	call     #SendCmdSpi  ; sending command 8
-	call     #WaitForResponse
-	call     #GetR7Response
+	mov.b    #1, r10
+	call     #CheckR1Byte
+	GetR7Response
 
 	jmp      InfLoop  ; nothing to do here so goto InfLoop
 
