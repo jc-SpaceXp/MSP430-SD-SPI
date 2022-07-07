@@ -363,6 +363,13 @@ SpiComm:
 	call     #CheckR1Byte
 	GetR7Response
 
+	; CMD58, read OCR (optional)
+	GenerateCmdBytes index=58
+	call     #SendCmdSpi  ; sending command 58
+	mov.b    #1, r10
+	call     #CheckR1Byte
+	GetR3Response
+
 	jmp      InfLoop  ; nothing to do here so goto InfLoop
 
 InfLoop:

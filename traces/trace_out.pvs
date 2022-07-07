@@ -1,6 +1,6 @@
 [General]
 decode_signals=1
-meta_objs=24
+meta_objs=36
 views=1
 
 [10]
@@ -100,118 +100,6 @@ conv_options=0
 conversion_type=0
 enabled=true
 name=CS
-
-[D0]
-color=4279638298
-conv_options=0
-conversion_type=0
-enabled=true
-name=CLK
-
-[D1]
-color=4287582722
-conv_options=0
-conversion_type=0
-enabled=true
-name=CS
-
-[D10]
-color=4279638298
-conv_options=0
-conversion_type=0
-enabled=false
-name=D10
-
-[D11]
-color=4287582722
-conv_options=0
-conversion_type=0
-enabled=false
-name=D11
-
-[D12]
-color=4291559424
-conv_options=0
-conversion_type=0
-enabled=false
-name=D12
-
-[D13]
-color=4294277376
-conv_options=0
-conversion_type=0
-enabled=false
-name=D13
-
-[D14]
-color=4293776384
-conv_options=0
-conversion_type=0
-enabled=false
-name=D14
-
-[D15]
-color=4285780502
-conv_options=0
-conversion_type=0
-enabled=false
-name=D15
-
-[D2]
-color=4291559424
-conv_options=0
-conversion_type=0
-enabled=false
-name=D2
-
-[D3]
-color=4294277376
-conv_options=0
-conversion_type=0
-enabled=false
-name=D3
-
-[D4]
-color=4293776384
-conv_options=0
-conversion_type=0
-enabled=false
-name=D4
-
-[D5]
-color=4285780502
-conv_options=0
-conversion_type=0
-enabled=true
-name=MOSI
-
-[D6]
-color=4281623972
-conv_options=0
-conversion_type=0
-enabled=true
-name=MISO
-
-[D7]
-color=4285878395
-conv_options=0
-conversion_type=0
-enabled=false
-name=D7
-
-[D8]
-color=4287138437
-conv_options=0
-conversion_type=0
-enabled=false
-name=D8
-
-[D9]
-color=4293848812
-conv_options=0
-conversion_type=0
-enabled=false
-name=D9
 
 [MISO]
 color=4281623972
@@ -407,148 +295,218 @@ name=SD card (SPI mode)
 
 [meta_obj0]
 assoc_view=0
-end_time=22 serialization::archive 19 0 0 0 0 1 2370877 11988114 55535047 15088946 61107531 0 0 0 6
-start_time=22 serialization::archive 19 0 0 0 0 1 1738200 0 8554934 53855160 62378883 0 0 0 6
-text=Init Sequence
-time=22 serialization::archive 19 0 0 0 0 67297 80813940 82199765 98044636 78425501 4713191 -8 0 0 6
+text=Clk Init Sequence
+time=22 serialization::archive 19 0 0 0 0 40549 99999999 99990226 56793634 66688300 0 -8 0 0 6
 type=time_marker
 
 [meta_obj1]
 assoc_view=0
-text=Init End
-time=22 serialization::archive 19 0 0 0 0 123200 0 22176 70491688 75018949 0 -8 0 0 6
+text=Clk Init End
+time=22 serialization::archive 19 0 0 0 0 96500 0 37435 33261157 94970974 0 -8 0 0 6
 type=time_marker
 
 [meta_obj10]
 assoc_view=0
 text=Resp Byte 2 (R1)
-time=22 serialization::archive 19 0 0 0 0 308649 99999999 99833966 14666730 78393796 0 -8 0 0 6
+time=22 serialization::archive 19 0 0 0 0 282000 0 24008 57290751 90101866 0 -8 0 0 6
 type=time_marker
 
 [meta_obj11]
 assoc_view=0
-text=Cmd8 Byte 1
-time=22 serialization::archive 19 0 0 0 0 461050 0 14876 98852997 70976416 0 -8 0 0 6
+text=Cmd8 Byte 0
+time=22 serialization::archive 19 0 0 0 0 434399 99999999 99771238 54577598 64948457 0 -8 0 0 6
 type=time_marker
 
 [meta_obj12]
 assoc_view=0
-text=Cmd8 Byte 2
-time=22 serialization::archive 19 0 0 0 0 465949 99999999 99579614 5172568 44759685 0 -8 0 0 6
+text=Cmd8 Byte 1
+time=22 serialization::archive 19 0 0 0 0 439300 0 203337 34696009 74203785 0 -8 0 0 6
 type=time_marker
 
 [meta_obj13]
 assoc_view=0
-text=Cmd8 Byte 3
-time=22 serialization::archive 19 0 0 0 0 470899 99999999 99644395 56521256 23601023 0 -8 0 0 6
+text=Cmd8 Byte 2
+time=22 serialization::archive 19 0 0 0 0 444250 0 268118 86044697 53045123 0 -8 0 0 6
 type=time_marker
 
 [meta_obj14]
 assoc_view=0
-text=Cmd8 Byte 4
-time=22 serialization::archive 19 0 0 0 0 475800 0 76494 36639667 32856351 0 -8 0 0 6
+text=Cmd8 Byte 3
+time=22 serialization::archive 19 0 0 0 0 449200 0 332900 37393385 31886460 0 -8 0 0 6
 type=time_marker
 
 [meta_obj15]
 assoc_view=0
-text=Cmd8 Byte 5
-time=22 serialization::archive 19 0 0 0 0 480750 0 141275 87988355 11697689 0 -8 0 0 6
+text=Cmd8 Byte 4
+time=22 serialization::archive 19 0 0 0 0 454099 99999999 99897637 43712956 5669729 0 -8 0 0 6
 type=time_marker
 
 [meta_obj16]
 assoc_view=0
-text=Cmd8 Byte 6
-time=22 serialization::archive 19 0 0 0 0 485649 99999999 99706012 94307925 85480958 0 -8 0 0 6
+text=Cmd8 Byte 5
+time=22 serialization::archive 19 0 0 0 0 459049 99999999 99962418 95061643 84511066 0 -8 0 0 6
 type=time_marker
 
 [meta_obj17]
 assoc_view=0
 text=Resp Byte 1
-time=22 serialization::archive 19 0 0 0 0 491299 99999999 99832522 85673529 51358770 0 -8 0 0 6
+time=22 serialization::archive 19 0 0 0 0 464700 0 88928 86427247 50388879 0 -8 0 0 6
 type=time_marker
 
 [meta_obj18]
 assoc_view=0
 text=Resp Byte 2 (R1)
-time=22 serialization::archive 19 0 0 0 0 496350 0 30031 53281611 4844184 0 -8 0 0 6
+time=22 serialization::archive 19 0 0 0 0 469699 95658569 39786320 76814925 51823803 23391856 -8 0 0 6
 type=time_marker
 
 [meta_obj19]
 assoc_view=0
 text=Resp Byte 3 (R7)
-time=22 serialization::archive 19 0 0 0 0 502250 0 54678 48396278 89596158 0 -8 0 0 6
+time=22 serialization::archive 19 0 0 0 0 475599 99999999 99811040 4120879 83568198 0 -8 0 0 6
 type=time_marker
 
 [meta_obj2]
 assoc_view=0
-text=Cmd Start
-time=22 serialization::archive 19 0 0 0 0 271950 0 129035 67103705 88189107 0 -8 0 0 6
+text=Clk Start
+time=22 serialization::archive 19 0 0 0 0 245299 99999999 99885397 22828306 82161147 0 -8 0 0 6
 type=time_marker
 
 [meta_obj20]
 assoc_view=0
 text=Resp Byte 4 (R7)
-time=22 serialization::archive 19 0 0 0 0 507099 99999999 99986732 83485572 93793419 0 -8 0 0 6
+time=22 serialization::archive 19 0 0 0 0 480449 99999999 99743094 39210173 87765459 0 -8 0 0 6
 type=time_marker
 
 [meta_obj21]
 assoc_view=0
 text=Resp Byte 5 (R7)
-time=22 serialization::archive 19 0 0 0 0 511900 0 286104 47344590 28404671 0 -8 0 0 6
+time=22 serialization::archive 19 0 0 0 0 485299 99999999 99675148 74299467 91962720 0 -8 0 0 6
 type=time_marker
 
 [meta_obj22]
 assoc_view=0
 text=Resp Byte 6 (R7)
-time=22 serialization::archive 19 0 0 0 0 516750 0 218158 82433884 32601932 0 -8 0 0 6
+time=22 serialization::archive 19 0 0 0 0 490099 99999999 99974520 38158485 26573972 0 -8 0 0 6
 type=time_marker
 
 [meta_obj23]
 assoc_view=0
-text=Cmd End
-time=22 serialization::archive 19 0 0 0 0 519699 11505706 55149056 19959660 35521214 40173297 -8 0 0 6
+text=Cmd58 Byte 0
+time=22 serialization::archive 19 0 0 0 0 642000 0 359157 14846623 81408270 0 -8 0 0 6
+type=time_marker
+
+[meta_obj24]
+assoc_view=0
+text=Cmd58 Byte 1
+time=22 serialization::archive 19 0 0 0 0 646950 0 423938 66195311 60249607 0 -8 0 0 6
+type=time_marker
+
+[meta_obj25]
+assoc_view=0
+text=Cmd58 Byte 2
+time=22 serialization::archive 19 0 0 0 0 651849 99999999 99988675 72514882 34032876 0 -8 0 0 6
+type=time_marker
+
+[meta_obj26]
+assoc_view=0
+text=Cmd58 Byte 3
+time=22 serialization::archive 19 0 0 0 0 656800 0 53457 23863570 12874213 0 -8 0 0 6
+type=time_marker
+
+[meta_obj27]
+assoc_view=0
+text=Cmd58 Byte 4
+time=22 serialization::archive 19 0 0 0 0 661699 99999999 99618194 30183140 86657483 0 -8 0 0 6
+type=time_marker
+
+[meta_obj28]
+assoc_view=0
+text=Cmd58 Byte 5
+time=22 serialization::archive 19 0 0 0 0 666649 99999999 99682975 81531828 65498820 0 -8 0 0 6
+type=time_marker
+
+[meta_obj29]
+assoc_view=0
+text=Resp Byte 1
+time=22 serialization::archive 19 0 0 0 0 672299 99999999 99809485 72897432 31376633 0 -8 0 0 6
 type=time_marker
 
 [meta_obj3]
 assoc_view=0
-text=Cmd0 Byte 1
-time=22 serialization::archive 19 0 0 0 0 273349 99999999 99818811 60238117 44526028 0 -8 0 0 6
+text=Cmd0 Byte 0
+time=22 serialization::archive 19 0 0 0 0 246649 99999999 99942490 44732441 68912060 0 -8 0 0 6
+type=time_marker
+
+[meta_obj30]
+assoc_view=0
+text=Resp Byte 2 (R1)
+time=22 serialization::archive 19 0 0 0 0 677300 0 374311 69275237 15276038 0 -8 0 0 6
+type=time_marker
+
+[meta_obj31]
+assoc_view=0
+text=Resp Byte 3 (R3)
+time=22 serialization::archive 19 0 0 0 0 683200 0 398958 64389905 28012 0 -8 0 0 6
+type=time_marker
+
+[meta_obj32]
+assoc_view=0
+text=Resp Byte 4 (R3)
+time=22 serialization::archive 19 0 0 0 0 688050 0 331012 99479199 4225273 0 -8 0 0 6
+type=time_marker
+
+[meta_obj33]
+assoc_view=0
+text=Resp Byte 5 (R3)
+time=22 serialization::archive 19 0 0 0 0 692900 0 263067 34568493 8422533 0 -8 0 0 6
+type=time_marker
+
+[meta_obj34]
+assoc_view=0
+text=Resp Byte 6 (R3)
+time=22 serialization::archive 19 0 0 0 0 697750 0 195121 69657787 12619794 0 -8 0 0 6
+type=time_marker
+
+[meta_obj35]
+assoc_view=0
+text=Cmd End
+time=22 serialization::archive 19 0 0 0 0 700399 99999999 99809263 68436939 81063552 0 -8 0 0 6
 type=time_marker
 
 [meta_obj4]
 assoc_view=0
-text=Cmd0 Byte 2
-time=22 serialization::archive 19 0 0 0 0 278249 99999999 99817229 53457108 36045327 0 -8 0 0 6
+text=Cmd0 Byte 1
+time=22 serialization::archive 19 0 0 0 0 251600 0 7271 96081129 47753397 0 -8 0 0 6
 type=time_marker
 
 [meta_obj5]
 assoc_view=0
-text=Cmd0 Byte 3
-time=22 serialization::archive 19 0 0 0 0 283199 99999999 99882011 4805796 14886664 0 -8 0 0 6
+text=Cmd0 Byte 2
+time=22 serialization::archive 19 0 0 0 0 256550 0 72053 47429817 26594734 0 -8 0 0 6
 type=time_marker
 
 [meta_obj6]
 assoc_view=0
-text=Cmd0 Byte 4
-time=22 serialization::archive 19 0 0 0 0 288099 99999999 99880428 98024787 6405963 0 -8 0 0 6
+text=Cmd0 Byte 3
+time=22 serialization::archive 19 0 0 0 0 261450 0 70471 40648808 18114033 0 -8 0 0 6
 type=time_marker
 
 [meta_obj7]
 assoc_view=0
-text=Cmd0 Byte 5
-time=22 serialization::archive 19 0 0 0 0 293049 99999999 99945210 49373474 85247300 0 -8 0 0 6
+text=Cmd0 Byte 4
+time=22 serialization::archive 19 0 0 0 0 266400 0 135252 91997495 96955371 0 -8 0 0 6
 type=time_marker
 
 [meta_obj8]
 assoc_view=0
-text=Cmd0 Byte 6
-time=22 serialization::archive 19 0 0 0 0 298000 0 9992 722162 64088638 0 -8 0 0 6
+text=Cmd0 Byte 5
+time=22 serialization::archive 19 0 0 0 0 271300 0 133670 85216486 88474670 0 -8 0 0 6
 type=time_marker
 
 [meta_obj9]
 assoc_view=0
 text=Resp Byte 1
-time=22 serialization::archive 19 0 0 0 0 303588 53457951 30831978 7027195 87092694 24633904 -8 0 0 6
+time=22 serialization::archive 19 0 0 0 0 276949 99999999 99826499 89682670 36616452 0 -8 0 0 6
 type=time_marker
 
 [view0]
@@ -566,27 +524,11 @@ type=time_marker
 9\trace_height=44
 CLK\trace_height=44
 CS\trace_height=44
-D0\trace_height=44
-D1\trace_height=44
-D10\trace_height=44
-D11\trace_height=44
-D12\trace_height=44
-D13\trace_height=44
-D14\trace_height=44
-D15\trace_height=44
-D2\trace_height=44
-D3\trace_height=44
-D4\trace_height=44
-D5\trace_height=44
-D6\trace_height=44
-D7\trace_height=44
-D8\trace_height=44
-D9\trace_height=44
 MISO\trace_height=44
 MOSI\trace_height=44
-offset=22 serialization::archive 19 0 0 0 0 67217 32369201 49805422 68856397 16582876 64147018 -8 1 0 6
-scale=4.595542797143705e-06
+offset=22 serialization::archive 19 0 0 0 0 480178 61182717 79311179 28159709 77376803 83967718 -8 0 0 6
+scale=3.8561891396796915e-06
 segment_display_mode=3
-splitter_state=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\0\xd1\0\0\x4\xcc\x1\0\0\0\x1\x1\0\0\0\x1\0)
-v_offset=-39
+splitter_state=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\0\xd1\0\0\x6\xaa\x1\0\0\0\x1\x1\0\0\0\x1\0)
+v_offset=1
 zero_offset=22 serialization::archive 19 0 0 0 0 0 0 0 0 0 0 0 0 0 6

@@ -36,6 +36,11 @@ With the requirements satisfied. It is as simple as:
     - With a R1 response of 0x01 this indicates a V2 spec SD card (as a invalid command would be seen from R1)
     - The last two bytes in the R7 response are the ones we care about (as the reserved bits are zero)
     - We can see they are 0x01 and 0xAA, where 0x01 shows that the current operating voltage is accepted, and 0xAA is simply the echo back of the check pattern from the CMD8 32-bit argument
+*** Sending CMD 58
+    [[file:traces/screenshots/04_cmd58_transmission.png]]
+    - Bits 15-23 are set from the OCR register when looking at MISO line (R3 response is 0x00FF8000)
+    - This means that the SD card supports the voltage range of 2.7 to 3.6V
+    - Bit 29 isn't set, meaning this isn't a UHS-II card (which is expected for the card I'm using, a UHS-I card)
 ** License
 
 This project is zlib licensed, as found in the [[file:LICENSE][LICENSE]] file.
