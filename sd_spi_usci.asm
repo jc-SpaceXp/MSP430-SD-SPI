@@ -312,6 +312,27 @@ ReLoopX:
 	call     #Crc7Calc
 .endm
 
+ ; SendACMD41 will try to complete the initialisation of the SD card
+ ; To first call any ACMD command a CMD55 must be sent immediately before
+ ; CMD55/ACMD41 pair is repeated until a R1 response of 0x00 is recieved (no longer in reset mode)
+SendACMD41:
+	; CMD55, as next command is ACMD41
+	GenerateCmdBytes index=55
+	call     #SendCmdSpi  ; sending command 55
+	mov.b    #1, r10      ; expected response is 1
+	call     #CheckR1Byte
+	; ACMD41, set HCS bit
+	GenerateCmdBytes 41, 0x40, 0x00, 0x00, 0x00
+	call     #SendCmdSpi  ; sending command 55
+	mov.b    #0, r10      ; expected response is 0
+	call     #CheckR1Byte ; cmp R5 to see if we should repeat this macro
+
+	cmp.b    #0, r5
+	jz       EarlyRet41
+
+	jmp      SendACMD41
+EarlyRet41:
+	ret ; SendACMD41
 
 
 Reset:
@@ -369,6 +390,8 @@ SpiComm:
 	mov.b    #1, r10
 	call     #CheckR1Byte
 	GetR3Response
+
+	call     #SendACMD41
 
 	jmp      InfLoop  ; nothing to do here so goto InfLoop
 
