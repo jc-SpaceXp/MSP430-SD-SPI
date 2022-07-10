@@ -417,8 +417,6 @@ SpiComm:
 	mov.w    #39859, &TA1CCR0  ; start timer
 	call     #SendACMD41
 
-	jmp      InfLoop  ; nothing to do here so goto InfLoop
-
 InfLoop:
 	jmp      InfLoop
 
