@@ -13,6 +13,7 @@ CmdBytes: .space 6, 0    ; reserve 6 bytes and fill w/ 0s
 	.text
 
 	.equ SP,      R1
+	.equ SR,      R2
 	.equ MOSI,    BIT7
 	.equ MISO,    BIT6
 	.equ SPI_CLK, BIT5
@@ -330,10 +331,24 @@ SendACMD41:
 	cmp.b    #0, r5
 	jz       EarlyRet41
 
+	; check if 1s timeout has passed
+	cmp.b    #10, r9
+	jge      EarlyRet41
+
 	jmp      SendACMD41
 EarlyRet41:
+	mov.w    #0, &TA1CCR0  ; stop timer
+	mov.b    #0, r9        ; clear ISR count
 	ret ; SendACMD41
 
+ ; TA1CCR0 ISR is called every time TAR reaches TA1CCR0
+ ; primarly used for the AMCD41 timeout when repating AMCD41 to
+ ; initialise the SD card
+ ;
+ ; r9 is used to count how many times the ISR has been called
+T1A3_ISR:
+	inc.b    r9
+	reti
 
 Reset:
 	mov.w    #WDTPW | WDTHOLD, &WDTCTL ; stop watchdog timer
@@ -357,6 +372,12 @@ Reset:
 	; enable interrupts if necessary
 	xor.b    r11, r11  ; clear counter, 1 cycle clear vs mov #0, r11 (2 cycles)
 	mov.w    #DELAYLOOPS, r7
+
+	; Timer1_A3 setup
+	mov.w    #0, &TA1CCR0      ; halt timer, resume w/ a non-zero value
+	mov.w    #CCIE, &TA1CCTL0
+	mov.w    #TASSEL_2 | ID_2 | MC_1, &TA1CTL  ; CLK = SMCLK, divider 1/4, count-up mode
+	bis.w    #GIE, SR  ; enable interrupts globally (maskable)
 
 	; LED setup
 	bic.b    #LED1, &P1OUT
@@ -391,6 +412,9 @@ SpiComm:
 	call     #CheckR1Byte
 	GetR3Response
 
+	; enable 1s timeout via 100ms interrupt
+	; logic analyser measures the SMCLK close to ~1.59 MHz
+	mov.w    #39859, &TA1CCR0  ; start timer
 	call     #SendACMD41
 
 	jmp      InfLoop  ; nothing to do here so goto InfLoop
@@ -401,4 +425,6 @@ InfLoop:
 ;----------------
 	.sect "__reset_vector", "a"  ; Reset vector, a flag is necessary for ELF output
 	.word  Reset   ; Address of execution
+	.sect "__interrupt_vector_timer1_a0", "a"  ; TA1CCR0 interrupt vector
+	.word  T1A3_ISR   ; Address of execution
 	.end
