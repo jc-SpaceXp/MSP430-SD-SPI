@@ -4,7 +4,7 @@
 ; Currently the response isn't processed, just confirm there are no errors
 ; Also will verify the communication over sigrok
 
-	.include "msp430g2553.inc" ; include device header file
+	.include "msp430g2553_gnu_as.inc" ; include device header file
 
 	.sect ".data", "wa"
 CmdBytes: .space 6, 0    ; reserve 6 bytes and fill w/ 0s
@@ -12,8 +12,6 @@ CmdBytes: .space 6, 0    ; reserve 6 bytes and fill w/ 0s
 
 	.text
 
-	.equ SP,      R1
-	.equ SR,      R2
 	.equ MOSI,    BIT7
 	.equ MISO,    BIT6
 	.equ SPI_CLK, BIT5

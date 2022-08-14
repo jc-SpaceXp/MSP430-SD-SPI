@@ -25,11 +25,18 @@ ENTRY_SECT ?= Reset
 
 SRCS := $(wildcard *.asm)
 OBJS := $(addsuffix .o,$(basename $(SRCS)))
+PYTHON_SCRIPT := $(wildcard *.py)
+PYTHON_SCRIPT_OUTPUT := $(wildcard *.inc)
 
 TARGET := $(basename $(SRCS))
 
+.PHONY: setup
+setup: $(PYTHON_SCRIPT)
+	@echo "--- Generating GNU AS header file"
+	python3 $(PYTHON_SCRIPT) -d $(MCU) -I $(SUPPORT_HEADERS) -L $(SUPPORT_LINKS) --msp430_comments
+
 .PHONY: all
-all: $(TARGET).elf
+all: setup $(TARGET).elf
 
 $(TARGET).elf: $(OBJS)
 	@echo "--- Linking build"
@@ -43,4 +50,4 @@ $(OBJS): $(SRCS)
 .PHONY: clean
 clean:
 	@echo "--- Cleaning build"
-	-rm $(OBJS) $(TARGET).elf
+	-rm $(OBJS) $(TARGET).elf $(PYTHON_SCRIPT_OUTPUT)
