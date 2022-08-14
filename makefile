@@ -13,7 +13,7 @@ AS = msp430-elf-as
 LD = msp430-elf-ld
 GDB = msp430-elf-gdb
 
-AFLAGS = -D --warn
+AFLAGS = -D --warn --strip-local-absolute
 LFLAGS = -L $(SUPPORT_LINKS) --warn-section-align --warn-unresolved-symbols -q -m msp430elf -T $(MCU).ld
 
 DEBUG ?= 0
